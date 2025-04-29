@@ -4,7 +4,7 @@ import pool from '@/lib/db/db';
 
 // get all authenticated user 
 export const getAllUsers = async () => {
-  const result = await pool.query('SELECT * FROM auth_table  where archived_at is not null order by created_at , updated_at');
+  const result = await pool.query('SELECT * FROM auth_table  where archived_at is null order by created_at , updated_at');
   return result.rows;
 };
 

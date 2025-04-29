@@ -8,7 +8,7 @@ const pool = new Pool({
   database: process.env.PGDATABASE,
 });
 
-// client.connect()
+// pool.connect()
 //   .then(() => console.log('DB connected!'))
 //   .catch(err => console.error('DB connection error',err));
 
