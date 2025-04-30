@@ -51,7 +51,7 @@ export function CustomAdapter(pool: Pool): Adapter {
       }
     
       const result = await pool.query(
-        `UPDATE users SET name = $1, email = $2, emailVerified = $3, image = $4 WHERE id = $5 RETURNING id, name, email, emailVerified, image`,
+        `UPDATE users SET name = $1, email = $2, "emailVerified" = $3, image = $4 WHERE id = $5 RETURNING *`,
         [user.name, user.email, user.emailVerified, user.image, user.id]
       );
     
@@ -112,7 +112,7 @@ export function CustomAdapter(pool: Pool): Adapter {
       return { sessionToken, userId, expires };
     },
 
-    async getSessionAndUser(sessionToken) {
+    async getSessionAndUser(sessionToken){
       console.log("getSessionAndUser")
       const res = await pool.query(
         `SELECT s."sessionToken", s.expires as expires, u.*
@@ -139,7 +139,7 @@ export function CustomAdapter(pool: Pool): Adapter {
 
     async updateSession({ sessionToken, expires, userId }: { sessionToken: string, expires: Date, userId: string }) {
       await pool.query(
-        `UPDATE sessions SET expires = $1, "userId" = $2 WHERE sessionToken = $3`,
+        `UPDATE sessions SET expires = $1, "userId" = $2 WHERE "sessionToken" = $3`,
         [expires, userId, sessionToken]
       );
       return { sessionToken, expires, userId };
@@ -154,7 +154,7 @@ export function CustomAdapter(pool: Pool): Adapter {
     async createVerificationToken({ identifier, expires, token }) {
       console.log("createVerificationToken")
       await pool.query(
-        `INSERT INTO verification_token (identifier, token, expires)
+        `INSERT INTO verification_token (identifis."sessionToken"er, token, expires)
          VALUES ($1, $2, $3)`,
         [identifier, token, expires]
       );
