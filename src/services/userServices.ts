@@ -31,12 +31,12 @@ export const createUser = async ( email: string , addedBy:string) => {
 
 
 // delete a authenticated user 
-export const deleteUser = async (userId:string , activeUserId : string )=>{
+export const deleteUser = async (userId:string , activeUserId : string, email:string )=>{
   try {
-   console.log("email -- ",userId , "activeuserid --",activeUserId)
+   console.log("userId -- ",userId , "activeuserid --",activeUserId , "email --- ",email)
    const result = await pool.query('update auth_table set archived_at = current_timestamp , deleted_by = $1 where auth_user_id = $2 returning*',[activeUserId,userId]);
-   await pool.query(`delete from sessions where userId = $1`,[userId]);
-   await pool.query(`update users set archived_at = current_timestamp where id=$1`,[userId]);
+   const getUserId = await pool.query(`select id from users where email = $1`,[email]);
+   await pool.query(`delete from sessions where "userId" = $1`,[getUserId.rows[0].id]);
    console.log("result -- ",result)
    return result.rows 
 

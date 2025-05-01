@@ -3,8 +3,8 @@
 import { NextResponse } from 'next/server';
 import { getAllUsers, createUser } from '@/services/userServices';
 
-
 import { auth } from "@/auth"
+
 
 //--------- get all authenticated user 
 export const GET = auth(async function GET(req) {
@@ -15,6 +15,7 @@ export const GET = auth(async function GET(req) {
   }
   return NextResponse.json({ message: "Not authenticated" }, { status: 401 })
 })
+
 
 //-------- add authenticated user
 export const POST = auth(async (req) => {

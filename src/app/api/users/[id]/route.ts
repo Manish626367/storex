@@ -13,10 +13,10 @@ export const PATCH = auth(async (req, { params }) => {
     }
 
     try {
-        const userId = params.id;
-        const { activeUserId } = await req.json();
-        
-        const user = await deleteUser(userId, activeUserId);
+        const {id} = await params;
+        const { activeUserId ,email} = await req.json();
+
+        const user = await deleteUser(id, activeUserId , email);
         
         return NextResponse.json(
             { message: "Successfully deleted", user },
