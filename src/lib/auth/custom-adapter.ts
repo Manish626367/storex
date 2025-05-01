@@ -13,8 +13,8 @@ export function CustomAdapter(pool: Pool): Adapter {
       console.log("createUser")
       const id = uuidv4();
       await pool.query(
-        `INSERT INTO users (id, name, email, "emailverified", image)
-         VALUES ($1, $2, $3, $4, $5)`,
+        `INSERT INTO users ( id,name, email, "emailVerified", image)
+         VALUES ($1, $2, $3, $4,$5)`,
         [id, user.name, user.email, user.emailVerified, user.image]
       );
       return { ...user, id };
@@ -47,7 +47,7 @@ export function CustomAdapter(pool: Pool): Adapter {
       console.log("updateUser");
       
       if (!user.email) {
-        throw new Error("Email is required to update user");
+        throw new Error("Email is required to update usselect *from userser");
       }
     
       const result = await pool.query(

@@ -1,14 +1,31 @@
+
+
+import { auth } from "@/auth";
 import { deleteUser } from "@/services/userServices";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function DELETE(req:NextRequest){
-    try {
-         const {auth_user_id} = await req.json();
-         const  user = await deleteUser(auth_user_id);
-         return NextResponse.json({message:"sucessfully deleted " , user})
-
-    } catch (error) {
-        console.log(error)
-        return new NextResponse('Internal Server Error', { status: 500 });
+export const PATCH = auth(async (req, { params }) => {
+    if (!req.auth) {
+        return NextResponse.json(
+            { error: "Not authenticated" },
+            { status: 401 }
+        );
     }
-}
+
+    try {
+        const userId = params.id;
+        const { activeUserId } = await req.json();
+        
+        const user = await deleteUser(userId, activeUserId);
+        
+        return NextResponse.json(
+            { message: "Successfully deleted", user },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { error: `internal server error ${error}` },
+            { status: 500 }
+        );
+    }
+});

@@ -1,9 +1,16 @@
 import { auth } from '@/auth';
 import { SignOutButton } from '@/app/dashboard/sign-out-button'
+// import { redirect } from 'next/navigation';
+
 
 export default async function DashboardPage() {
   const session = await auth();
-  console.log("-->",session); 
+
+
+  // if(!session?.user) {
+  //     redirect('/login')
+  // }
+  // console.log("-->",session); 
 
   return (
     <div>
