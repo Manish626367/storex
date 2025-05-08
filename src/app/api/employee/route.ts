@@ -1,8 +1,5 @@
 
-
 import { NextResponse } from 'next/server';
-
-
 
 import { auth } from "@/auth"
 import { checkUserExistOrNot, createEmployee, getAllEmployees } from '@/services/employeeServices';
@@ -28,13 +25,14 @@ export const POST = auth(async (req) => {
   
     try {
       const { name, email, phoneNumber, employeeType, employeeStatus, addedBy } = await req.json();
-    //   console.log("employeestatus" , employeeStatus)
+
       const ifUserExist = await checkUserExistOrNot(email)
-    //   console.log("ifuserexist -- ",ifUserExist);
+
       if(!ifUserExist){
          return NextResponse.json({ error: "email already exist " }, { status: 409 });
       }
       const employee = await createEmployee(name, email, phoneNumber, employeeType, employeeStatus, addedBy);
+      if(employee == null){ return NextResponse.json({ error: "something went wrong " }, { status: 401 });}
       return NextResponse.json({ employee }, { status: 200 });
     } catch (error) {
       console.error("Error adding employee:", error);
